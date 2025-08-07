@@ -80,7 +80,7 @@ const formSubmit = () => {
     flex-direction: column;
     max-width: 400px;
     margin: auto;
-    max-height: max-content;
+    max-height: calc(100vh - 30px);
     &__head {
         position: sticky;
         top: 0;
