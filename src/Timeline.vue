@@ -69,8 +69,8 @@ onMounted(() => {
                             v-for="change in line.properties.changes"
                         >
                             <strong>{{ change.label }}</strong> de
-                            <span>"{{ change.old_value }}"</span> a
-                            <span>"{{ change.new_value }}"</span>
+                            <strong>"{{ change.old_value || 'Nulo' }}"</strong> a
+                            <strong>"{{ change.new_value || 'Nulo' }}"</strong>
                         </div>
                         <div class="timeline__description">
                             {{ line.created_at_formatted }} por {{ line.causer.fullname }}
