@@ -1,26 +1,38 @@
 <template>
-    <div class="modal">
+    <div class="modal" :class="{ 'modal--wide': displayFormat === 'table' }">
         <div class="modal__head">
             <h1 class="m-0">Historial de Actividad</h1>
         </div>
         <div class="modal__body px-20">
-            <GuachimanActivityLogTimeline
+            <component
+                :is="componentToRender"
                 :log_name="props.data.rawData.log_name"
                 :log_ref="props.data.rawData.log_ref"
-            ></GuachimanActivityLogTimeline>
+            />
         </div>
     </div>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import GuachimanActivityLogTimeline from './Timeline.vue'
+import GuachimanActivityLogTable from './ActivityLogTable.vue'
 
 const props = defineProps({
     data: {
         type: Object,
         required: true
     }
+})
+
+// Determinar el formato a mostrar: 'timeline' (por defecto) o 'table'.
+const displayFormat = computed(() => {
+    const fmt = props?.data?.rawData?.format || 'timeline'
+    return String(fmt).toLowerCase()
+})
+
+const componentToRender = computed(() => {
+    return displayFormat.value === 'timeline' ? GuachimanActivityLogTimeline : GuachimanActivityLogTable
 })
 
 const close = () => {
@@ -81,6 +93,9 @@ const formSubmit = () => {
     max-width: 400px;
     margin: auto;
     max-height: calc(100vh - 30px);
+    &.modal--wide {
+        max-width: 1200px;
+    }
     &__head {
         position: sticky;
         top: 0;
