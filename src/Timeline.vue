@@ -37,6 +37,33 @@ const loadTimeline = () => {
 onMounted(() => {
     loadTimeline()
 })
+
+const changesFor = (line) => {
+    const changes = line && line.properties && Array.isArray(line.properties.changes)
+        ? line.properties.changes
+        : []
+    return changes
+}
+
+const isRelationDiff = (change) => {
+    if (!change) return false
+    const hasAdded = change.added && (Array.isArray(change.added.ids) || Array.isArray(change.added.labels))
+    const hasRemoved = change.removed && (Array.isArray(change.removed.ids) || Array.isArray(change.removed.labels))
+    const hasLabelArrays = Array.isArray(change.old_labels) || Array.isArray(change.new_labels)
+    const hasArrayValues = Array.isArray(change.old_value) || Array.isArray(change.new_value)
+    return !!(hasAdded || hasRemoved || hasLabelArrays || hasArrayValues)
+}
+
+const joinOrDash = (arr) => {
+    if (Array.isArray(arr) && arr.length) return arr.join(', ')
+    return '—'
+}
+
+const prettyValue = (v) => {
+    if (v === null || v === undefined || v === '') return 'Nulo'
+    if (Array.isArray(v)) return v.length ? v.join(', ') : '—'
+    return String(v)
+}
 </script>
 
 <template>
@@ -64,14 +91,20 @@ onMounted(() => {
                     </div>
                     <div v-else>
                         <div class="timeline__title">Actualización</div>
-                        <div
-                            class="timeline__description"
-                            v-for="change in line.properties.changes"
-                        >
-                            <strong>{{ change.label }}</strong> de
-                            <strong>"{{ change.old_value || 'Nulo' }}"</strong> a
-                            <strong>"{{ change.new_value || 'Nulo' }}"</strong>
-                        </div>
+                        <template v-for="(change, cidx) in changesFor(line)" :key="cidx">
+                            <div class="timeline__description" v-if="isRelationDiff(change)">
+                                <strong>{{ change.label || change.field }}</strong>
+                                <div>• Añadidos: <span>{{ joinOrDash(change.added?.labels || change.added?.ids) }}</span></div>
+                                <div>• Quitados: <span>{{ joinOrDash(change.removed?.labels || change.removed?.ids) }}</span></div>
+                                <div>• Antes: <span>{{ joinOrDash(change.old_labels || change.old_value) }}</span></div>
+                                <div>• Ahora: <span>{{ joinOrDash(change.new_labels || change.new_value) }}</span></div>
+                            </div>
+                            <div class="timeline__description" v-else>
+                                <strong>{{ change.label || change.field }}</strong> de
+                                <strong>"{{ prettyValue(change.old_value) }}"</strong> a
+                                <strong>"{{ prettyValue(change.new_value) }}"</strong>
+                            </div>
+                        </template>
                         <div class="timeline__description">
                             {{ line.created_at_formatted }} por {{ line.causer.fullname }}
                         </div>
