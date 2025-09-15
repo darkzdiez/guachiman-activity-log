@@ -94,10 +94,10 @@ const prettyValue = (v) => {
                         <template v-for="(change, cidx) in changesFor(line)" :key="cidx">
                             <div class="timeline__description" v-if="isRelationDiff(change)">
                                 <strong>{{ change.label || change.field }}</strong>
-                                <div>• Añadidos: <span>{{ joinOrDash(change.added?.labels || change.added?.ids) }}</span></div>
-                                <div>• Quitados: <span>{{ joinOrDash(change.removed?.labels || change.removed?.ids) }}</span></div>
-                                <div>• Antes: <span>{{ joinOrDash(change.old_labels || change.old_value) }}</span></div>
-                                <div>• Ahora: <span>{{ joinOrDash(change.new_labels || change.new_value) }}</span></div>
+                                <div>• <strong>Nuevos:</strong> <span>{{ joinOrDash(change.added?.labels || change.added?.ids) }}</span></div>
+                                <div>• <strong>Quitados:</strong> <span>{{ joinOrDash(change.removed?.labels || change.removed?.ids) }}</span></div>
+                                <div>• <strong>Antes:</strong> <span>{{ joinOrDash(change.old_labels || change.old_value) }}</span></div>
+                                <div>• <strong>Ahora:</strong> <span>{{ joinOrDash(change.new_labels || change.new_value) }}</span></div>
                             </div>
                             <div class="timeline__description" v-else>
                                 <strong>{{ change.label || change.field }}</strong> de

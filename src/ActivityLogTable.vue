@@ -85,25 +85,23 @@ onMounted(() => {
                         <template v-if="line.event === 'create'">
                             Registro Creado
                         </template>
-                        <template v-else>
-                            <ul class="details-list">
-                                <li v-for="(change, cidx) in changesFor(line)" :key="cidx">
-                                    <template v-if="isRelationDiff(change)">
-                                        <strong>{{ change.label || change.field }}:</strong>
-                                        <div>• Añadidos: <span class="muted">{{ joinOrDash(change.added?.labels || change.added?.ids) }}</span></div>
-                                        <div>• Quitados: <span class="muted">{{ joinOrDash(change.removed?.labels || change.removed?.ids) }}</span></div>
-                                        <div>• Antes: <span class="muted">{{ joinOrDash(change.old_labels || change.old_value) }}</span></div>
-                                        <div>• Ahora: <span class="muted">{{ joinOrDash(change.new_labels || change.new_value) }}</span></div>
-                                    </template>
-                                    <template v-else>
-                                        <strong>{{ change.label || change.field }}:</strong>
-                                        <span class="muted">"{{ prettyValue(change.old_value) }}"</span>
-                                        →
-                                        <span class="muted">"{{ prettyValue(change.new_value) }}"</span>
-                                    </template>
-                                </li>
-                            </ul>
-                        </template>
+                        <ul class="details-list">
+                            <li v-for="(change, cidx) in changesFor(line)" :key="cidx">
+                                <template v-if="isRelationDiff(change)">
+                                    <strong>{{ change.label || change.field }}:</strong>
+                                    <div>• <strong>Añadidos:</strong> <span class="muted">{{ joinOrDash(change.added?.labels || change.added?.ids) }}</span></div>
+                                    <div>• <strong>Quitados:</strong> <span class="muted">{{ joinOrDash(change.removed?.labels || change.removed?.ids) }}</span></div>
+                                    <div>• <strong>Antes:</strong> <span class="muted">{{ joinOrDash(change.old_labels || change.old_value) }}</span></div>
+                                    <div>• <strong>Ahora:</strong> <span class="muted">{{ joinOrDash(change.new_labels || change.new_value) }}</span></div>
+                                </template>
+                                <template v-else>
+                                    <strong>{{ change.label || change.field }}:</strong>
+                                    <span class="muted">"{{ prettyValue(change.old_value) }}"</span>
+                                    →
+                                    <span class="muted">"{{ prettyValue(change.new_value) }}"</span>
+                                </template>
+                            </li>
+                        </ul>
                     </td>
                 </tr>
             </tbody>
