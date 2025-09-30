@@ -89,7 +89,7 @@ const prettyValue = (v) => {
                             {{ line.created_at_formatted }} por {{ line.causer.fullname }}
                         </div>
                     </div>
-                    <div v-else>
+                    <div v-if="line.event === 'update'">
                         <div class="timeline__title">Actualización</div>
                         <template v-for="(change, cidx) in changesFor(line)" :key="cidx">
                             <div class="timeline__description" v-if="isRelationDiff(change)">
@@ -106,6 +106,13 @@ const prettyValue = (v) => {
                             </div>
                         </template>
                         <div class="timeline__description">
+                            {{ line.created_at_formatted }} por {{ line.causer.fullname }}
+                        </div>
+                    </div>
+                    <div v-if="line.event !== 'create' && line.event !== 'update'">
+                        <div class="timeline__title">Evento: {{ line.event }}</div>
+                        <div class="timeline__description">
+                            <p>{{ line.description }}</p>
                             {{ line.created_at_formatted }} por {{ line.causer.fullname }}
                         </div>
                     </div>

@@ -85,7 +85,14 @@ onMounted(() => {
                         <template v-if="line.event === 'create'">
                             Registro Creado
                         </template>
-                        <ul class="details-list">
+                        <template v-else-if="line.event === 'update'">
+                            Registro Actualizado
+                        </template>
+                        <template v-if="line.event !== 'create' && line.event !== 'update'">
+                            Evento: {{ line.event }}
+                            <p>{{ line.description }}</p>
+                        </template>
+                        <ul class="details-list" v-if="changesFor(line).length">
                             <li v-for="(change, cidx) in changesFor(line)" :key="cidx">
                                 <template v-if="isRelationDiff(change)">
                                     <strong>{{ change.label || change.field }}:</strong>
