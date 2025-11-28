@@ -89,7 +89,7 @@ onMounted(() => {
                             Registro Actualizado
                         </template>
                         <template v-if="line.event !== 'create' && line.event !== 'update'">
-                            Evento: {{ line.event }}
+                            <template v-if="line.event && line.event.length > 0">{{ line.event }}</template>
                             <p>{{ line.description }}</p>
                         </template>
                         <ul class="details-list" v-if="changesFor(line).length">

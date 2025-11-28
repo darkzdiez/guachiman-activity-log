@@ -110,9 +110,10 @@ const prettyValue = (v) => {
                         </div>
                     </div>
                     <div v-if="line.event !== 'create' && line.event !== 'update'">
-                        <div class="timeline__title">Evento: {{ line.event }}</div>
+                        <div class="timeline__title" v-if="line.event && line.event.length > 0 && !line.event.startsWith('hidden-')">{{ line.event }}</div>
+                        <div class="timeline__title" v-if="line.event && line.event.length > 0 && line.event.startsWith('hidden-')">{{ line.description }}</div>
                         <div class="timeline__description">
-                            <p>{{ line.description }}</p>
+                            <p v-if="!line.event?.startsWith('hidden-')">{{ line.description }}</p>
                             {{ line.created_at_formatted }} por {{ line.causer.fullname }}
                         </div>
                     </div>
