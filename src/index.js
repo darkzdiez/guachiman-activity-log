@@ -1,4 +1,5 @@
 import Timeline from './Timeline.vue'
+import Timeline2 from './Timeline2.vue'
 import ShowModal from './ModalShow.vue'
 import GuachimanActivityLogTimeline from './Timeline.vue'
 import GuachimanActivityLogTable from './ActivityLogTable.vue'
@@ -18,6 +19,7 @@ const showModalActivityLogTimeline = (logName, logRef, format = 'timeline') => {
 export {
     showModalActivityLogTimeline,
     Timeline,
+    Timeline2,
     ShowModal,
     GuachimanActivityLogTimeline,
     GuachimanActivityLogTable
