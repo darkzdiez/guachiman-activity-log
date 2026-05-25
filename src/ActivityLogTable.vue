@@ -62,6 +62,16 @@ const prettyValue = (v) => {
     return String(v)
 }
 
+const channelLabels = {
+    web: { label: 'Web', icon: '🌐' },
+    mcp: { label: 'Agente IA', icon: '🤖' },
+    api: { label: 'API', icon: '🔌' },
+    sap_sync: { label: 'SAP Sync', icon: '🔄' },
+    cli: { label: 'Consola', icon: '⌨️' },
+}
+
+const channelInfo = (ch) => channelLabels[ch] || { label: ch || '—', icon: '' }
+
 onMounted(() => {
     loadRows()
 })
@@ -74,6 +84,7 @@ onMounted(() => {
                 <tr>
                     <th>Fecha</th>
                     <th>Usuario</th>
+                    <th>Canal</th>
                     <th>Detalles</th>
                 </tr>
             </thead>
@@ -81,6 +92,11 @@ onMounted(() => {
                 <tr v-for="(line, idx) in rows" :key="idx">
                     <td class="nowrap">{{ line.created_at_formatted }}</td>
                     <td>{{ line.causer?.fullname || '—' }}</td>
+                    <td class="nowrap">
+                        <span class="channel-badge" :class="'channel--' + (line.channel || 'unknown')">
+                            {{ channelInfo(line.channel).icon }} {{ channelInfo(line.channel).label }}
+                        </span>
+                    </td>
                     <td>
                         <template v-if="line.event === 'create'">
                             Registro Creado
@@ -157,4 +173,20 @@ onMounted(() => {
     color: #757575;
     font-style: italic;
 }
+
+.channel-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.channel--web { background: #dbeafe; color: #1e40af; }
+.channel--mcp { background: #f3e8ff; color: #7c3aed; }
+.channel--api { background: #fef3c7; color: #92400e; }
+.channel--sap_sync { background: #d1fae5; color: #065f46; }
+.channel--cli { background: #e5e7eb; color: #374151; }
+.channel--unknown { background: #f3f4f6; color: #9ca3af; }
 </style>
